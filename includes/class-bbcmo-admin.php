@@ -16,10 +16,18 @@ class BBCMO_Media_Admin {
     
     /**
      * Constructor
+     * 
+     * @param array $settings Settings passed directly to avoid circular dependencies
      */
-    public function __construct() {
-        // Load settings
-        $this->settings = BB_Custom_Media_Offload_MS()->get_settings();
+    public function __construct($settings = null) {
+        // If settings provided, use them directly (avoiding circular dependency)
+        if ($settings !== null) {
+            $this->settings = $settings;
+        } 
+        // Otherwise fall back to getting from main class (for backward compatibility)
+        else {
+            $this->settings = BB_Custom_Media_Offload_MS()->get_settings();
+        }
         
         // Set up hooks
         $this->setup_bbcmo_admin_hooks();

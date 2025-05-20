@@ -33,6 +33,9 @@ class BB_Custom_Media_Offload_MS {
     private $core = null;
     private $queue = null;
     
+    // Settings
+    private $settings = array();
+    
     /**
      * Get singleton instance
      */
@@ -47,8 +50,16 @@ class BB_Custom_Media_Offload_MS {
      * Private constructor to enforce singleton
      */
     private function __construct() {
+        // Load settings first to break circular dependency
+        $this->settings = $this->load_settings();
+        
+        // Now include files
         $this->includes();
+        
+        // Initialize components with settings passed directly
         $this->init_components();
+        
+        // Setup hooks last
         $this->setup_hooks();
     }
     
@@ -65,9 +76,10 @@ class BB_Custom_Media_Offload_MS {
      * Initialize plugin components
      */
     private function init_components() {
-        $this->admin = new BBCMO_Media_Admin();
-        $this->core = new BBCMO_Media_Core();
-        $this->queue = new BBCMO_Offload_Queue();
+        // Pass settings directly to avoid circular dependencies
+        $this->admin = new BBCMO_Media_Admin($this->settings);
+        $this->core = new BBCMO_Media_Core($this->settings);
+        $this->queue = new BBCMO_Offload_Queue($this->settings);
     }
     
     /**
@@ -86,8 +98,9 @@ class BB_Custom_Media_Offload_MS {
      * Plugin activation
      */
     public function activate() {
-        // Create queue table
-        $this->queue->create_queue_table();
+        // Create queue table - use direct instance to avoid potential circular references
+        $queue = new BBCMO_Offload_Queue($this->settings);
+        $queue->create_queue_table();
         
         // Initialize default settings if not exists
         if (empty(get_site_option('bbcmo_settings'))) {
@@ -135,16 +148,16 @@ class BB_Custom_Media_Offload_MS {
     }
     
     /**
-     * Get settings
+     * Load settings
      */
-    public function get_settings() {
+    private function load_settings() {
         $defaults = array(
             'bunny_api_key' => '',
             'storage_zone' => '',
             'cdn_url' => '',
             'offload_delay' => 300,
             'local_file_types' => 'json',
-            'nfs_base_path' => wp_upload_dir()['basedir'],
+            'nfs_base_path' => defined('ABSPATH') ? path_join(ABSPATH, 'wp-content/uploads') : '',
             'delete_local_after_offload' => false,
             'force_https' => true,
             'enable_for_sites' => array(),
@@ -152,6 +165,13 @@ class BB_Custom_Media_Offload_MS {
         
         $saved_settings = get_site_option('bbcmo_settings', array());
         return wp_parse_args($saved_settings, $defaults);
+    }
+    
+    /**
+     * Get settings - public method for compatibility
+     */
+    public function get_settings() {
+        return $this->settings;
     }
 }
 
