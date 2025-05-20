@@ -1,0 +1,70 @@
+/* BB Custom Media Offload MS Admin Styles */
+
+.bbcmo-admin-wrap .bbcmo-settings-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.bbcmo-admin-wrap .bbcmo-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 3px;
+}
+
+.bbcmo-admin-wrap .bbcmo-info-card {
+    border-left: 4px solid #00a0d2;
+}
+
+.bbcmo-admin-wrap h3 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.3em;
+}
+
+.bbcmo-admin-wrap h4 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.1em;
+}
+
+.bbcmo-admin-wrap .bbcmo-list {
+    margin-left: 1.5em;
+}
+
+.bbcmo-admin-wrap .bbcmo-list li {
+    margin-bottom: 0.5em;
+}
+
+.bbcmo-admin-wrap code {
+    background: #f6f6f6;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.bbcmo-admin-wrap button.bbcmo-process-now,
+.bbcmo-admin-wrap button.bbcmo-retry-failed {
+    position: relative;
+}
+
+.bbcmo-admin-wrap button.loading:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -6px;
+    height: 12px;
+    width: 12px;
+    border: 2px solid rgba(0,0,0,.1);
+    border-right-color: #444;
+    border-radius: 50%;
+    animation: bbcmo-rotate .8s infinite linear;
+}
+
+@keyframes bbcmo-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}

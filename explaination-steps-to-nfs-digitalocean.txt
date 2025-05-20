@@ -1,0 +1,56 @@
+BB Custom Media Offload MS for WordPress Multisite
+A complete plugin structure for BB Custom Media Offload MS, which provides efficient media offloading from WordPress Multisite to Bunny.net while keeping specific file types on your local server.
+
+Plugin Structure
+bb-custom-media-offload-ms/
+├── bb-custom-media-offload-ms.php       (Main plugin file)
+├── readme.txt                           (WordPress plugin readme)
+├── languages/                           (Empty directory for translations)
+├── assets/
+│   ├── css/
+│   │   └── bbcmo-admin.css              (Admin styles with plugin-specific prefix)
+│   └── js/
+│       └── bbcmo-admin.js               (Admin JavaScript with plugin-specific prefix)
+└── includes/
+    ├── class-bbcmo-admin.php            (Admin interface with plugin-specific prefix)
+    ├── class-bbcmo-media-core.php       (Core functionality with plugin-specific prefix)
+    └── class-bbcmo-offload-queue.php    (Queue management with plugin-specific prefix)
+Installation Instructions
+Create the directory structure above on your WordPress server
+Upload all the files to their respective locations
+Network activate the plugin from your WordPress Network Admin
+Configure settings via "BB Advanced > Media Offload" in the Network Admin
+Key Components
+Main Plugin File (bb-custom-media-offload-ms.php)
+Plugin initialization
+Setting up hooks
+Loading components
+Admin Class (class-bbcmo-admin.php)
+Network admin interface
+Site-specific status page
+Ajax handlers for queue management
+Core Class (class-bbcmo-media-core.php)
+Media handling functions
+Bunny.net upload functionality
+URL replacement logic
+Queue Class (class-bbcmo-offload-queue.php)
+Queue table management
+Background processing
+Retry functionality
+Configuration
+After installation, you'll need to:
+
+Enter your Bunny.net API credentials
+Configure which file types to keep local
+Set up your NFS storage path
+Select which sites to enable the feature for
+NFS Setup
+Follow these steps for creating a dedicated NFS server:
+
+Create a dedicated Ubuntu droplet for NFS server
+Attach a Volume to this NFS server droplet
+Install NFS server: apt install nfs-kernel-server
+Configure exports to allow access from your WordPress servers
+On WordPress servers: apt install nfs-common
+Mount NFS share to same location on all WordPress servers
+Set that mount point as the NFS Base Path in plugin settings
